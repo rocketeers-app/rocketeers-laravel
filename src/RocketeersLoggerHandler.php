@@ -6,7 +6,7 @@ use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Rocketeers\Laravel\Facades\RocketeersLogger;
 
-class PusherLoggerHandler extends AbstractProcessingHandler
+class RocketeersLoggerHandler extends AbstractProcessingHandler
 {
     protected function write(array $record): void
     {
