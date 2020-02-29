@@ -5,7 +5,6 @@ namespace Rocketeers\Laravel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Logger;
-use Rocketeers\Rocketeers;
 
 class RocketeersLoggerServiceProvider extends ServiceProvider
 {
@@ -31,8 +30,6 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
         Log::extend('rocketeers', function ($app) {
             return $app['rocketeers.logger'];
         });
-
-        $this->app->alias('rocketeers.client', Rocketeers::class);
 
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
