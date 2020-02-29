@@ -15,7 +15,8 @@
     }],
     "require": {
         "php": "^7.1",
-        "illuminate/support": "^6.0"
+        "illuminate/support": "^6.0",
+        "rocketeers-app/rocketeers-api-client": "dev-master"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0",
