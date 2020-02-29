@@ -29,13 +29,14 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'code' => $this->getCodeFromException($report['context']['exception']),
                 'context' => $report['context'],
                 'datetime' => $report['datetime'],
-                'exception' => $report['context']['exception']->getMessage(),
+                'exception' => $report['context']['exception']->getOriginalClassName(),
                 'extra' => $report['extra'],
                 'file' => $report['context']['exception']->getFile(),
                 'level_name' => $report['level_name'],
                 'level' => $report['level'],
                 'line' => $report['context']['exception']->getLine(),
-                'message' => $report['message'],
+                'message' => $report['context']['exception']->getMessage(),
+                'trace' => $report['context']['exception']->getTrace(),
 
                 'method' => $this->request->getMethod(),
                 'url' => $this->request->getUri(),
@@ -45,9 +46,9 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'hostname' => gethostbyaddr($this->request->getClientIp()),
                 'user_agent' => $this->request->headers->get('User-Agent'),
                 'inputs' => $this->request->all(),
-                'inputs' => $this->getFiles(),
+                'files' => $this->getFiles(),
                 'headers' => $this->request->headers->all(),
-                'session' => $this->request->session->all(),
+                'session' => $this->request->getSession() ? $this->request->session->all() : null,
                 'cookies' => $this->request->cookies->all(),
             ]);
         }
