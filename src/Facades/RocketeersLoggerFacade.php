@@ -8,6 +8,6 @@ class RocketeersLoggerFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'rocketeers-logger';
+        return 'rocketeers.logger';
     }
 }

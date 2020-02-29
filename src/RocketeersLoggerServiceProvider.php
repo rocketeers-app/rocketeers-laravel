@@ -2,8 +2,13 @@
 
 namespace Rocketeers\Laravel;
 
+use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Log\LogManager;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Rocketeers\Laravel\Facades\RocketeersLogger;
+use Monolog\Logger;
+use Rocketeers\Rocketeers;
 
 class RocketeersLoggerServiceProvider extends ServiceProvider
 {
@@ -24,12 +29,21 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('rocketeers-logger', function () {
-            $rocketeers = new Rocketeers(config('rocketeers.api_token'));
+        $this->mergeConfigFrom(__DIR__ . '/../config/rocketeers.php', 'rocketeers');
 
-            return new RocketeersLogger($rocketeers);
+        Log::extend('rocketeers', function ($app) {
+            return $app['rocketeers.logger'];
         });
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/rocketeers.php', 'rocketeers');
+        $this->app->alias('rocketeers.client', Rocketeers::class);
+
+        $this->app->singleton('rocketeers.logger', function ($app) {
+            $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
+
+            $logger = new Logger('Rocketeers');
+            $logger->pushHandler($handler);
+
+            return $logger;
+        });
     }
 }

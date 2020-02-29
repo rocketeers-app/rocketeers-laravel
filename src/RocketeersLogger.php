@@ -13,13 +13,6 @@ class RocketeersLogger
 
     public function log($message, $level)
     {
-        return app('rocketeers-logger')
-            ->setMessage($message)
-            ->setLevel($level);
-    }
-
-    public function send()
-    {
-        dd($this);
+        dd('a');
     }
 }
