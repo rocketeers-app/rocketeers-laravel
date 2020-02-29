@@ -1,11 +1,11 @@
 {
-    "name": "markvaneijk/rocketeers-laravel",
+    "name": "rocketeers-app/rocketeers-laravel",
     "description": "Rocketeers integration for Laravel",
     "keywords": [
-        "markvaneijk",
+        "rocketeers-app",
         "rocketeers-laravel"
     ],
-    "homepage": "https://github.com/markvaneijk/rocketeers-laravel",
+    "homepage": "https://github.com/rocketeers-app/rocketeers-laravel",
     "license": "MIT",
     "type": "library",
     "authors": [{
