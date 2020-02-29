@@ -44,9 +44,9 @@
             "providers": [
                 "Rocketeers\\Laravel\\RocketeersLoggerServiceProvider"
             ],
-            "aliases": [
+            "aliases": {
                 "RocketeersLogger": "Rocketeers\\Laravel\\Facades\\RocketeersLoggerFacade"
-            ]
+            }
         }
     },
     "repositories": [{
