@@ -23,6 +23,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
 
     protected function write(array $report): void
     {
+        dd($report['context']['exception']);
         if (!is_null($report['context']['exception'])) {
             $this->client->report([
                 'channel' => $report['channel'],
