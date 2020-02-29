@@ -4,7 +4,7 @@ namespace Rocketeers\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class RocketeersLogger extends Facade
+class RocketeersLoggerFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
