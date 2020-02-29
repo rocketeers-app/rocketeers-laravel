@@ -1,0 +1,49 @@
+{
+    "name": "markvaneijk/rocketeers-laravel",
+    "description": "Rocketeers integration for Laravel",
+    "keywords": [
+        "markvaneijk",
+        "rocketeers-laravel"
+    ],
+    "homepage": "https://github.com/markvaneijk/rocketeers-laravel",
+    "license": "MIT",
+    "type": "library",
+    "authors": [{
+        "name": "Mark van Eijk",
+        "email": "mark@vaneijk.co",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rocketeers\\Laravel\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rocketeers\\Laravel\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rocketeers\\Laravel\\LaravelServiceProvider"
+            ]
+        }
+    }
+}
