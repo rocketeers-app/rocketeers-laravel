@@ -23,32 +23,43 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
 
     protected function write(array $report): void
     {
-        $this->client->report([
-            'channel' => $report['channel'],
-            'code' => 500,
-            'context' => $report['context'],
-            'datetime' => $report['datetime'],
-            'exception' => $report['context']['exception'],
-            'extra' => $report['extra'],
-            'level_name' => $report['level_name'],
-            'level' => $report['level'],
-            'message' => $report['message'],
+        if (!is_null($report['context']['exception'])) {
+            $this->client->report([
+                'channel' => $report['channel'],
+                'code' => $this->getCodeFromException($report['context']['exception']),
+                'context' => $report['context'],
+                'datetime' => $report['datetime'],
+                'exception' => $report['context']['exception']->getMessage(),
+                'extra' => $report['extra'],
+                'file' => $report['context']['exception']->getFile(),
+                'level_name' => $report['level_name'],
+                'level' => $report['level'],
+                'line' => $report['context']['exception']->getLine(),
+                'message' => $report['message'],
 
-            'method' => $this->request->getMethod(),
-            'url' => $this->request->getUri(),
-            'referrer' => $this->request->server('HTTP_REFERER'),
-            'querystring' => $this->request->query->all(),
-            'ip_address' => $this->request->getClientIp(),
-            'hostname' => gethostbyaddr($this->request->getClientIp()),
-            'user_agent' => $this->request->headers->get('User-Agent'),
-            'inputs' => $this->request->all(),
-            'inputs' => $this->getFiles(),
-            'headers' => $this->request->headers->all(),
-            'session' => $this->request->session->all(),
-            'cookies' => $this->request->cookies->all(),
-        ]);
+                'method' => $this->request->getMethod(),
+                'url' => $this->request->getUri(),
+                'referrer' => $this->request->server('HTTP_REFERER'),
+                'querystring' => $this->request->query->all(),
+                'ip_address' => $this->request->getClientIp(),
+                'hostname' => gethostbyaddr($this->request->getClientIp()),
+                'user_agent' => $this->request->headers->get('User-Agent'),
+                'inputs' => $this->request->all(),
+                'inputs' => $this->getFiles(),
+                'headers' => $this->request->headers->all(),
+                'session' => $this->request->session->all(),
+                'cookies' => $this->request->cookies->all(),
+            ]);
+        }
 
         return;
+    }
+
+    protected function getCodeFromException($exception)
+    {
+        $code = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : $exception->getCode();
+
+        return $code == 0 ? 500 : $code;
     }
 
     protected function getFiles(): array
