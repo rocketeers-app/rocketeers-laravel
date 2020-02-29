@@ -1,6 +1,6 @@
 <?php
 
-namespace PackageNamespace\PusherLogger;
+namespace Rocketeers\Laravel;
 
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
