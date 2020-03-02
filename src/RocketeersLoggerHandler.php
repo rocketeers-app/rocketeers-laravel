@@ -43,7 +43,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'referrer' => $this->request->server('HTTP_REFERER'),
                 'querystring' => $this->request->query->all() ?: null,
                 'ip_address' => $this->request->getClientIp(),
-                'hostname' => gethostbyaddr($this->request->getClientIp()),
+                'hostname' => $this->request->getClientIp() !== '127.0.0.1' ? gethostbyaddr($this->request->getClientIp()) : 'localhost',
                 'user_agent' => $this->request->headers->get('User-Agent'),
                 'inputs' => $this->request->all() ?: null,
                 'files' => $this->getFiles(),
