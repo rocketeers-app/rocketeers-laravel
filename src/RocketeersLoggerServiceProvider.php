@@ -15,7 +15,7 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/rocketeers.php' => config_path('rocketeers.php'),
+                __DIR__.'/../config/rocketeers.php' => config_path('rocketeers.php'),
             ], 'config');
         }
     }
@@ -25,7 +25,7 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/rocketeers.php', 'rocketeers');
+        $this->mergeConfigFrom(__DIR__.'/../config/rocketeers.php', 'rocketeers');
 
         Log::extend('rocketeers', function ($app) {
             return $app['rocketeers.logger'];

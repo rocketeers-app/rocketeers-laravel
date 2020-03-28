@@ -23,9 +23,10 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
 
     protected function write(array $report): void
     {
-        if (!is_null($report['context']['exception'])) {
+        if (! is_null($report['context']['exception'])) {
             $this->client->report([
                 'channel' => $report['channel'],
+                'environment' => app()->environment(),
                 'code' => $this->getCodeFromException($report['context']['exception']),
                 'context' => $report['context'],
                 'datetime' => $report['datetime'],
@@ -52,8 +53,6 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'cookies' => $this->request->cookies->all(),
             ]);
         }
-
-        return;
     }
 
     protected function getCodeFromException($exception)
@@ -79,7 +78,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 return $this->mapFiles($file);
             }
 
-            if (!$file instanceof UploadedFile) {
+            if (! $file instanceof UploadedFile) {
                 return;
             }
 
