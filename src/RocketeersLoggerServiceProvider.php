@@ -34,7 +34,7 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
 
-            $logger = new Logger('Rocketeers');
+            $logger = new Logger('rocketeers');
             $logger->pushHandler($handler);
 
             return $logger;
