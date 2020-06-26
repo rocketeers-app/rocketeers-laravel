@@ -39,8 +39,9 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'message' => $report['context']['exception']->getMessage(),
                 'trace' => $report['context']['exception']->getTrace(),
 
-                'method' => app()->runningInConsole() ? 'CLI' : $this->request->getMethod(),
+                'method' => ! app()->runningInConsole() ? $this->request->getMethod() : null,
                 'url' => app()->runningInConsole() ? config('app.url') : $this->request->getUri(),
+                'command' => trim(implode(' ', $this->request->server('argv', null) ?: [])),
                 'referrer' => $this->request->server('HTTP_REFERER'),
                 'querystring' => $this->request->query->all() ?: null,
                 'ip_address' => $this->request->getClientIp(),
