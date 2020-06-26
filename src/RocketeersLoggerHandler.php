@@ -50,7 +50,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
                 'inputs' => $this->request->all() ?: null,
                 'files' => $this->getFiles(),
                 'headers' => $this->request->headers->all(),
-                'session' => $this->request->getSession() ? $this->request->session->all() : null,
+                'sessions' => $this->request->getSession() ? $this->request->session->all() : null,
                 'cookies' => $this->request->cookies->all(),
             ]);
         }
