@@ -25,33 +25,33 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     {
         if (! is_null($report['context']['exception'])) {
             $this->client->report([
-                'channel' => $report['channel'],
+                'channel' => $report['channel'], // not saved currently
                 'environment' => app()->environment(),
                 'code' => $this->getCodeFromException($report['context']['exception']),
-                'context' => $report['context'],
-                'datetime' => $report['datetime'],
                 'exception' => method_exists($report['context']['exception'], 'getOriginalClassName') ? $report['context']['exception']->getOriginalClassName() : get_class($report['context']['exception']),
-                'extra' => $report['extra'] ?: null,
-                'file' => $report['context']['exception']->getFile(),
-                'level_name' => $report['level_name'],
-                'level' => $report['level'],
-                'line' => $report['context']['exception']->getLine(),
                 'message' => $report['context']['exception']->getMessage(),
+                'context' => $report['context'], // not saved currently
+                'datetime' => $report['datetime'], // not saved currently
+                'extra' => $report['extra'] ?: null, // not saved currently
+                'level' => $report['level'], // not saved currently
+                'level_name' => $report['level_name'], // not saved currently
+                'file' => $report['context']['exception']->getFile(),
+                'line' => $report['context']['exception']->getLine(),
                 'trace' => $report['context']['exception']->getTrace(),
                 'method' => ! app()->runningInConsole() ? $this->request->getMethod() : null,
                 'url' => app()->runningInConsole() ? config('app.url') : $this->request->getUri(),
-                'command' => trim(implode(' ', $this->request->server('argv', null) ?: [])),
-                'referrer' => $this->request->server('HTTP_REFERER'),
                 'querystring' => $this->request->query->all() ?: null,
+                'referrer' => $this->request->server('HTTP_REFERER'),
+                'headers' => $this->request->headers->all(),
+                'cookies' => $this->request->cookies->all(),
+                'files' => $this->getFiles(),
+                'inputs' => $this->request->all() ?: null,
+                'sessions' => $this->request->getSession() ? $this->request->session()->all() : null,
                 'user_name' => $this->request->user() ? $this->request->user()->name : null,
+                'user_agent' => $this->request->headers->get('User-Agent'),
                 'ip_address' => $this->request->getClientIp(),
                 'hostname' => $this->request->getClientIp() && $this->request->getClientIp() !== '127.0.0.1' ? gethostbyaddr($this->request->getClientIp()) : 'localhost',
-                'user_agent' => $this->request->headers->get('User-Agent'),
-                'inputs' => $this->request->all() ?: null,
-                'files' => $this->getFiles(),
-                'headers' => $this->request->headers->all(),
-                'sessions' => $this->request->getSession() ? $this->request->session->all() : null,
-                'cookies' => $this->request->cookies->all(),
+                'command' => trim(implode(' ', $this->request->server('argv', null) ?: [])),
             ]);
         }
     }
