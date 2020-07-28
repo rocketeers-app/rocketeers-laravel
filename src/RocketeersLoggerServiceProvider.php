@@ -5,6 +5,7 @@ namespace Rocketeers\Laravel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Logger;
+use Rocketeers\Laravel\RocketeersEventServiceProvider;
 
 class RocketeersLoggerServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,8 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(RocketeersEventServiceProvider::class);
+
         $this->mergeConfigFrom(__DIR__.'/../config/rocketeers.php', 'rocketeers');
 
         Log::extend('rocketeers', function ($app) {
