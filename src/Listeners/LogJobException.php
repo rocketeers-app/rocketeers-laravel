@@ -20,12 +20,12 @@ class LogJobException
     {
         $this->client->report([
             'environment' => app()->environment(),
-            'code' => $this->getCodeFromException($event['exception']),
-            'exception' => method_exists($event['exception'], 'getOriginalClassName') ? $event['exception']->getOriginalClassName() : get_class($event['exception']),
-            'message' => $event['exception']->getMessage(),
-            'file' => $event['exception']->getFile(),
-            'line' => $event['exception']->getLine(),
-            'trace' => $event['exception']->getTrace(),
+            'code' => $this->getCodeFromException($event->exception),
+            'exception' => method_exists($event->exception, 'getOriginalClassName') ? $event->exception->getOriginalClassName() : get_class($event->exception),
+            'message' => $event->exception->getMessage(),
+            'file' => $event->exception->getFile(),
+            'line' => $event->exception->getLine(),
+            'trace' => $event->exception->getTrace(),
             'url' => config('app.url'),
         ]);
     }
