@@ -7,10 +7,8 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\InteractsWithQueue;
 use Rocketeers\Rocketeers;
 
-class LogJobException implements ShouldQueue
+class LogJobException
 {
-    use InteractsWithQueue;
-
     protected $client;
 
     public function __construct(Rocketeers $client)
