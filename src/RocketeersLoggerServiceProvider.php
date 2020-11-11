@@ -2,6 +2,7 @@
 
 namespace Rocketeers\Laravel;
 
+use Illuminate\Container\Container;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
