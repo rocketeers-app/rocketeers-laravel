@@ -41,10 +41,6 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
     {
         $this->app->register(RocketeersEventServiceProvider::class);
 
-        Log::extend('rocketeers', function ($app) {
-            return $app['rocketeers.logger'];
-        });
-
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
 
@@ -52,6 +48,10 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
             $logger->pushHandler($handler);
 
             return $logger;
+        });
+
+        Log::extend('rocketeers', function ($app) {
+            return $app['rocketeers.logger'];
         });
     }
 }
