@@ -2,8 +2,10 @@
 
 namespace Rocketeers\Laravel;
 
+use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Monolog\Logger;
 use Rocketeers\Laravel\RocketeersEventServiceProvider;
 
@@ -14,11 +16,22 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
+        $this->setupConfig($this->app);
+    }
+
+    public function setupConfig(Container $app)
+    {
+        $source = realpath($raw = __DIR__.'/../config/rocketeers.php') ?: $raw;
+
+        if ($app instanceof LaravelApplication && $app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/rocketeers.php' => config_path('rocketeers.php'),
             ], 'config');
+        } elseif ($app instanceof LumenApplication) {
+            $app->configure('rocketeers');
         }
+
+        $this->mergeConfigFrom($source, 'rocketeers');
     }
 
     /**
@@ -28,12 +41,6 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
     {
         $this->app->register(RocketeersEventServiceProvider::class);
 
-        $this->mergeConfigFrom(__DIR__.'/../config/rocketeers.php', 'rocketeers');
-
-        Log::extend('rocketeers', function ($app) {
-            return $app['rocketeers.logger'];
-        });
-
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
 
@@ -41,6 +48,10 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
             $logger->pushHandler($handler);
 
             return $logger;
+        });
+
+        Log::extend('rocketeers', function ($app) {
+            return $app['rocketeers.logger'];
         });
     }
 }
