@@ -27,6 +27,9 @@ class LogJobException
             'line' => $event->exception->getLine(),
             'trace' => $event->exception->getTrace(),
             'url' => config('app.url'),
+            'connection' => $event->job->getConnectionName(),
+            'queue' => $event->job->getQueue(),
+            'body' => $event->job->getRawBody(),
         ]);
     }
 
