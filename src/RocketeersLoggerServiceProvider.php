@@ -17,22 +17,9 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setupConfig($this->app);
-    }
-
-    public function setupConfig(Container $app)
-    {
-        $source = realpath($raw = __DIR__.'/../config/rocketeers.php') ?: $raw;
-
-        if ($app instanceof LaravelApplication && $app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/rocketeers.php' => config_path('rocketeers.php'),
-            ], 'config');
-        } elseif ($app instanceof LumenApplication) {
-            $app->configure('rocketeers');
-        }
-
-        $this->mergeConfigFrom($source, 'rocketeers');
+        $this->publishes([
+            __DIR__.'/../config/rocketeers.php' => config_path('rocketeers.php'),
+        ], 'config');
     }
 
     /**
@@ -40,6 +27,10 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $source = realpath($raw = __DIR__.'/../config/rocketeers.php') ?: $raw;
+
+        $this->mergeConfigFrom($source, 'rocketeers');
+
         $this->app->register(RocketeersEventServiceProvider::class);
 
         $this->app->singleton('rocketeers.logger', function ($app) {
