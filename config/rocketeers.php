@@ -2,4 +2,8 @@
 
 return [
     'api_token' => env('ROCKETEERS_API_TOKEN'),
+
+    'environments' => [
+        'production',
+    ],
 ];
