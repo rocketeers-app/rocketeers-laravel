@@ -1,9 +1,9 @@
 # Very short description of the package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/markvaneijk/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/markvaneijk/rocketeers-laravel)
-[![Build Status](https://img.shields.io/travis/markvaneijk/rocketeers-laravel/master.svg?style=flat-square)](https://travis-ci.org/markvaneijk/rocketeers-laravel)
-[![Quality Score](https://img.shields.io/scrutinizer/g/markvaneijk/rocketeers-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/markvaneijk/rocketeers-laravel)
-[![Total Downloads](https://img.shields.io/packagist/dt/markvaneijk/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/markvaneijk/rocketeers-laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/rocketeers-app/rocketeers-laravel)
+[![Build Status](https://img.shields.io/travis/rocketeers-app/rocketeers-laravel/master.svg?style=flat-square)](https://travis-ci.org/rocketeers-app/rocketeers-laravel)
+[![Quality Score](https://img.shields.io/scrutinizer/g/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/rocketeers-app/rocketeers-laravel)
+[![Total Downloads](https://img.shields.io/packagist/dt/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/rocketeers-app/rocketeers-laravel)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
@@ -12,7 +12,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 You can install the package via composer:
 
 ```bash
-composer require markvaneijk/rocketeers-laravel
+composer require rocketeers-app/rocketeers-laravel
 ```
 
 ## Usage
