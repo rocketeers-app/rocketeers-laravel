@@ -2,8 +2,11 @@
 
 namespace Rocketeers\Laravel;
 
+use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Log\LogManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
@@ -36,14 +39,28 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
 
-            $logger = new Logger('rocketeers');
+            $logger = new Logger('Rocketeers');
             $logger->pushHandler($handler);
 
             return $logger;
         });
 
-        Log::extend('rocketeers', function ($app) {
-            return $app['rocketeers.logger'];
-        });
+        if ($this->app['log'] instanceof LogManager) {
+            Log::extend('rocketeers', function ($app) {
+                return $app['rocketeers.logger'];
+            });
+        } else {
+            $this->app['log']->listen(function (MessageLogged $messageLogged) {
+                try {
+                    $this->app['rocketeers.logger']->report([
+                        'level' => $messageLogged->level,
+                        'message' => $messageLogged->message,
+                        'context' => $messageLogged->context,
+                    ]);
+                } catch (Exception $exception) {
+                    return;
+                }
+            });
+        }
     }
 }
