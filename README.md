@@ -9,7 +9,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 
-You can install the package via Composer:
+You can install this package via Composer:
 
 ```bash
 composer require rocketeers-app/rocketeers-laravel
