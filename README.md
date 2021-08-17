@@ -47,13 +47,7 @@ return [
 ];
 ```
 
-Add the `ROCKETEERS_API_TOKEN` in your `.env` file.
-
-Done!
-
-### Testing
-
-
+And at last, add the `ROCKETEERS_API_TOKEN` in your `.env` file.
 
 ### Changelog
 
