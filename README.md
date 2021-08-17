@@ -15,7 +15,7 @@ You can install this package via Composer:
 composer require rocketeers-app/rocketeers-laravel
 ```
 
-Configure 'rocketeers' in your 'stack' logging configuration, so you keep your normal logging with additional Rocketeers logging:
+Configure `rocketeers` in your `stack` logging configuration, so you keep your normal logging with additional Rocketeers logging:
 
 ```php
 'channels' => [
@@ -31,7 +31,7 @@ Configure 'rocketeers' in your 'stack' logging configuration, so you keep your n
     ],
 ```
 
-Make sure that in the logging configuration the default log channel is 'stack':
+Make sure that in the logging configuration the default log channel is `stack`:
 
 ```php
 'default' => env('LOG_CHANNEL', 'stack'),
