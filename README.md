@@ -9,11 +9,37 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require rocketeers-app/rocketeers-laravel
 ```
+
+Configure 'rocketeers' in your 'stack' logging configuration, so you keep your normal logging with additional Rocketeers logging:
+
+```php
+'channels' => [
+    'stack' => [
+        'driver' => 'stack',
+        'channels' => ['rocketeers', 'daily'],
+        'ignore_exceptions' => false,
+    ],
+
+    'rocketeers' => [
+        'driver' => 'rocketeers',
+        'level' => 'debug',
+    ],
+```
+
+Make sure that in the logging configuration the default log channel is 'stack':
+
+```php
+'default' => env('LOG_CHANNEL', 'stack'),
+```
+
+Add the `ROCKETEERS_API_TOKEN` in your `.env` file.
+
+Done!
 
 ## Usage
 
