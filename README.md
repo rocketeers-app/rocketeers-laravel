@@ -51,17 +51,9 @@ Add the `ROCKETEERS_API_TOKEN` in your `.env` file.
 
 Done!
 
-## Usage
-
-``` php
-// Usage description here
-```
-
 ### Testing
 
-``` bash
-composer test
-```
+
 
 ### Changelog
 
@@ -83,7 +75,3 @@ If you discover any security related issues, please email mark@vaneijk.co instea
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
