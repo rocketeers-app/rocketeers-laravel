@@ -27,7 +27,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             return;
         }
 
-        if (is_null($report['context']['exception'])) {
+        if (!isset($report['context']['exception'])) {
             return;
         }
 
