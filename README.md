@@ -1,31 +1,53 @@
-# Very short description of the package
+# Rocketeers for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/rocketeers-app/rocketeers-laravel)
 [![Build Status](https://img.shields.io/travis/rocketeers-app/rocketeers-laravel/master.svg?style=flat-square)](https://travis-ci.org/rocketeers-app/rocketeers-laravel)
 [![Quality Score](https://img.shields.io/scrutinizer/g/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/rocketeers-app/rocketeers-laravel)
 [![Total Downloads](https://img.shields.io/packagist/dt/rocketeers-app/rocketeers-laravel.svg?style=flat-square)](https://packagist.org/packages/rocketeers-app/rocketeers-laravel)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Laravel integration package with Rocketeers app.
 
 ## Installation
 
-You can install the package via composer:
+You can install this package via Composer:
 
 ```bash
 composer require rocketeers-app/rocketeers-laravel
 ```
 
-## Usage
+Configure `rocketeers` in your `stack` logging configuration, so you keep your normal logging with additional Rocketeers logging:
 
-``` php
-// Usage description here
+```php
+'channels' => [
+    'stack' => [
+        'driver' => 'stack',
+        'channels' => ['rocketeers', 'daily'],
+        'ignore_exceptions' => false,
+    ],
+
+    'rocketeers' => [
+        'driver' => 'rocketeers',
+        'level' => 'debug',
+    ],
 ```
 
-### Testing
+Make sure that in the logging configuration the default log channel is `stack`:
 
-``` bash
-composer test
+```php
+'default' => env('LOG_CHANNEL', 'stack'),
 ```
+
+Add the Rocketeers config file to your Laravel app:
+
+```php
+<?php
+
+return [
+    'rocketeers.api_token' => env('ROCKETEERS_API_TOKEN'),
+];
+```
+
+And at last, add the `ROCKETEERS_API_TOKEN` in your `.env` file.
 
 ### Changelog
 
@@ -47,7 +69,3 @@ If you discover any security related issues, please email mark@vaneijk.co instea
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
