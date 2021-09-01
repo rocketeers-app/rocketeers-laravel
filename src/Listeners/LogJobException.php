@@ -29,6 +29,7 @@ class LogJobException
             'url' => config('app.url'),
             'connection' => $event->job->getConnectionName(),
             'queue' => $event->job->getQueue(),
+            'job' => $event->job->resolveName() ?? $event->job->getName(),
             'body' => $event->job->getRawBody(),
         ]);
     }
