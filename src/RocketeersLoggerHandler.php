@@ -57,9 +57,18 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             'user_name' => $this->request->user() ? $this->request->user()->name : null,
             'user_agent' => $this->request->headers->get('User-Agent'),
             'ip_address' => $this->request->getClientIp(),
-            'hostname' => $this->request->getClientIp() && $this->request->getClientIp() !== '127.0.0.1' ? gethostbyaddr($this->request->getClientIp()) : 'localhost',
+            'hostname' => $this->getHostname(),
             'command' => trim(implode(' ', $this->request->server('argv', null) ?: [])),
         ]);
+    }
+
+    public function getHostname()
+    {
+        if($this->request->getClientIp() == '127.0.0.1') {
+            return shell_exec('hostname');
+        }
+
+        return gethostbyaddr($this->request->getClientIp());
     }
 
     protected function getCodeFromException($exception)
