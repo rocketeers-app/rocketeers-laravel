@@ -64,7 +64,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
 
     public function getHostname()
     {
-        if($this->request->getClientIp() == '127.0.0.1') {
+        if(!$this->request->getClientIp() || $this->request->getClientIp() == '127.0.0.1') {
             return shell_exec('hostname');
         }
 
