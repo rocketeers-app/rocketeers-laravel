@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Rocketeers\Rocketeers;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
 class RocketeersLoggerHandler extends AbstractProcessingHandler
 {
@@ -53,7 +54,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             'cookies' => $this->request->cookies->all(),
             'files' => $this->getFiles(),
             'inputs' => $this->request->all() ?: null,
-            'sessions' => $this->request->getSession() ? $this->request->session()->all() : null,
+            'sessions' => $this->getSession(),
             'user_name' => $this->request->user() ? $this->request->user()->name : null,
             'user_agent' => $this->request->headers->get('User-Agent'),
             'ip_address' => $this->request->getClientIp(),
@@ -69,6 +70,16 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         }
 
         return gethostbyaddr($this->request->getClientIp());
+    }
+    public function getSession()
+    {
+        try {
+            $session = $this->request->getSession() ? $this->request->session()->all() : null;
+        } catch (SessionNotFoundException $exception) {
+            $session = null;
+        }
+
+        return $session;
     }
 
     protected function getCodeFromException($exception)
