@@ -19,6 +19,7 @@ Configure `rocketeers` in your `stack` logging configuration, so you keep your n
 
 ```php
 'channels' => [
+
     'stack' => [
         'driver' => 'stack',
         'channels' => ['rocketeers', 'daily'],
