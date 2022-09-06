@@ -29,6 +29,8 @@ Configure `rocketeers` in your `stack` logging configuration, so you keep your n
         'driver' => 'rocketeers',
         'level' => 'debug',
     ],
+
+    // ...
 ```
 
 Make sure that in the logging configuration the default log channel is `stack`:
