@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Rocketeers\Rocketeers;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
@@ -22,30 +23,30 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         parent::__construct($level, $bubble);
     }
 
-    protected function write(array $report): void
+    protected function write(LogRecord $record): void
     {
         if (! in_array(app()->environment(), config('rocketeers.environments'))) {
             return;
         }
 
-        if (!isset($report['context']['exception'])) {
+        if (!isset($record['context']['exception'])) {
             return;
         }
 
-        $this->client->report([
-            'channel' => $report['channel'], // not saved currently
+        $this->client->record([
+            'channel' => $record['channel'], // not saved currently
             'environment' => app()->environment(),
-            'code' => $this->getCodeFromException($report['context']['exception']),
-            'exception' => method_exists($report['context']['exception'], 'getOriginalClassName') ? $report['context']['exception']->getOriginalClassName() : get_class($report['context']['exception']),
-            'message' => $report['context']['exception']->getMessage(),
-            'context' => $report['context'], // not saved currently
-            'datetime' => $report['datetime'], // not saved currently
-            'extra' => $report['extra'] ?: null, // not saved currently
-            'level' => $report['level'], // not saved currently
-            'level_name' => $report['level_name'], // not saved currently
-            'file' => $report['context']['exception']->getFile(),
-            'line' => $report['context']['exception']->getLine(),
-            'trace' => $report['context']['exception']->getTrace(),
+            'code' => $this->getCodeFromException($record['context']['exception']),
+            'exception' => method_exists($record['context']['exception'], 'getOriginalClassName') ? $record['context']['exception']->getOriginalClassName() : get_class($record['context']['exception']),
+            'message' => $record['context']['exception']->getMessage(),
+            'context' => $record['context'], // not saved currently
+            'datetime' => $record['datetime'], // not saved currently
+            'extra' => $record['extra'] ?: null, // not saved currently
+            'level' => $record['level'], // not saved currently
+            'level_name' => $record['level_name'], // not saved currently
+            'file' => $record['context']['exception']->getFile(),
+            'line' => $record['context']['exception']->getLine(),
+            'trace' => $record['context']['exception']->getTrace(),
             'method' => app()->runningInConsole() ? null : $this->request->getMethod(),
             'url' => app()->runningInConsole() ? config('app.url') : $this->request->getUri(),
             'querystring' => $this->request->query->all() ?: null,
