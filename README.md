@@ -56,6 +56,9 @@ And at last, add the `ROCKETEERS_API_TOKEN` in your `.env` file.
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
+For Laravel 10.x and up use `v2.0.0`.
+For Laravel 9.x and below use `v1.0.0` or the `release/v1` branch.
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
