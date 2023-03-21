@@ -33,7 +33,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             return;
         }
 
-        $this->client->record([
+        $this->client->report([
             'channel' => $record['channel'], // not saved currently
             'environment' => app()->environment(),
             'code' => $this->getCodeFromException($record['context']['exception']),
