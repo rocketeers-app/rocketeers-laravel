@@ -3,15 +3,17 @@
 namespace Rocketeers\Laravel;
 
 use Exception;
-use Illuminate\Container\Container;
-use Illuminate\Foundation\Application as LaravelApplication;
-use Illuminate\Log\Events\MessageLogged;
+use Monolog\Logger;
 use Illuminate\Log\LogManager;
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Log\Events\MessageLogged;
+use Rocketeers\Laravel\Services\Horizon;
 use Laravel\Lumen\Application as LumenApplication;
-use Monolog\Logger;
 use Rocketeers\Laravel\RocketeersEventServiceProvider;
+use Rocketeers\Laravel\RocketeersHorizonServiceProvider;
+use Illuminate\Foundation\Application as LaravelApplication;
 
 class RocketeersLoggerServiceProvider extends ServiceProvider
 {
@@ -21,7 +23,7 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/rocketeers.php' => config_path('rocketeers.php'),
+            __DIR__ . '/../config/rocketeers.php' => config_path('rocketeers.php'),
         ], 'config');
     }
 
@@ -30,11 +32,13 @@ class RocketeersLoggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $source = realpath($raw = __DIR__.'/../config/rocketeers.php') ?: $raw;
+        $source = realpath($raw = __DIR__ . '/../config/rocketeers.php') ?: $raw;
 
         $this->mergeConfigFrom($source, 'rocketeers');
 
         $this->app->register(RocketeersEventServiceProvider::class);
+
+        $this->app->register(RocketeersHorizonServiceProvider::class);
 
         $this->app->singleton('rocketeers.logger', function ($app) {
             $handler = new RocketeersLoggerHandler($app->make('rocketeers.client'));
