@@ -30,8 +30,6 @@ class RocketeersHorizonServiceProvider extends HorizonApplicationServiceProvider
                 $paths[] = $horizonPath;
                 $config->set('cors.paths', $paths);
             }
-
-            dd($paths);
         });
     }
 
