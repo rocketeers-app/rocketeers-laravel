@@ -27,7 +27,7 @@ class Horizon
         /**
          * @var \Illuminate\Http\Request $request
          */
-        $request = Request::instance();
+        $request = $this->getRequestInstance();
 
         /**
          * @var HeaderBag $headers
@@ -38,6 +38,11 @@ class Horizon
             return false;
         }
 
-        return Request::bearerToken() === Config::get('services.horizon.secret') || Request::bearerToken() === Config::get('rocketeers.api_token');
+        return $request->bearerToken() === Config::get('services.horizon.secret') || $request->bearerToken() === Config::get('rocketeers.api_token');
+    }
+
+    public function getRequestInstance(): \Illuminate\Http\Request
+    {
+        return Request::instance();
     }
 }
