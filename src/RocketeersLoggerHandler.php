@@ -83,11 +83,17 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         return $session;
     }
 
-    protected function getCodeFromException($exception)
+    protected function getCodeFromException($exception): ?int
     {
-        $code = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : $exception->getCode();
+        if(method_exists($exception, 'getStatusCode')) {
+            return $exception->getStatusCode();
+        }
+        
+        if(method_exists($exception, 'getCode')) {
+            return $exception->getCode();
+        }
 
-        return $code == 0 ? 500 : $code;
+        return null;
     }
 
     protected function getFiles(): array
