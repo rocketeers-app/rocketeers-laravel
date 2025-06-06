@@ -86,11 +86,11 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     protected function getCodeFromException($exception): ?int
     {
         if(method_exists($exception, 'getStatusCode')) {
-            return $exception->getStatusCode();
+            return (int) $exception->getStatusCode();
         }
         
         if(method_exists($exception, 'getCode')) {
-            return $exception->getCode();
+            return (int) $exception->getCode();
         }
 
         return null;
