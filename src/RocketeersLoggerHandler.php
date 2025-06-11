@@ -36,17 +36,17 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         $this->client->report([
             'channel' => $record['channel'], // not saved currently
             'environment' => app()->environment(),
-            'code' => $this->getCodeFromException($record['context']['exception']),
-            'exception' => method_exists($record['context']['exception'], 'getOriginalClassName') ? $record['context']['exception']->getOriginalClassName() : get_class($record['context']['exception']),
-            'message' => $record['context']['exception']->getMessage(),
+            'code' => $this->getCodeFromException($record),
+            'exception' => $this->getException($record),
+            'message' => $this->getMessage($record),
             'context' => $record['context'], // not saved currently
             'datetime' => $record['datetime'], // not saved currently
             'extra' => $record['extra'] ?: null, // not saved currently
             'level' => $record['level'], // not saved currently
             'level_name' => $record['level_name'], // not saved currently
-            'file' => $record['context']['exception']->getFile(),
-            'line' => $record['context']['exception']->getLine(),
-            'trace' => $record['context']['exception']->getTrace(),
+            'file' => $record['context']['exception']?->getFile(),
+            'line' => $record['context']['exception']?->getLine(),
+            'trace' => $record['context']['exception']?->getTrace(),
             'method' => app()->runningInConsole() ? null : $this->request->getMethod(),
             'url' => app()->runningInConsole() ? config('app.url') : $this->request->getUri(),
             'querystring' => $this->request->query->all() ?: null,
@@ -62,6 +62,33 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             'hostname' => $this->getHostname(),
             'command' => trim(implode(' ', $this->request->server('argv', null) ?: [])),
         ]);
+    }
+
+    public function getException(LogRecord $record): ?string
+    {
+        $exception = $record['context']['exception'] ?? null;
+
+        if(is_string($exception)) {
+            return $exception;
+        }
+
+        if(is_object($exception)) {
+            if(method_exists($record['context']['exception'], 'getOriginalClassName')) {
+                return $record['context']['exception']->getOriginalClassName();
+            }
+            else {
+                return get_class($record['context']['exception']);
+            }
+        }
+
+        return null;
+    }
+
+    public function getMessage(LogRecord $record): ?string
+    {
+        $exception = $record['context']['exception'] ?? null;
+        
+        return $exception?->getMessage();
     }
 
     public function getHostname()
@@ -83,13 +110,15 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         return $session;
     }
 
-    protected function getCodeFromException($exception): ?int
+    protected function getCodeFromException(LogRecord $record): ?int
     {
-        if(method_exists($exception, 'getStatusCode')) {
+        $exception = $record['context']['exception'] ?? null;
+        
+        if(is_object($exception) && method_exists($exception, 'getStatusCode')) {
             return (int) $exception->getStatusCode();
         }
         
-        if(method_exists($exception, 'getCode')) {
+        if(is_object($exception) && method_exists($exception, 'getCode')) {
             return (int) $exception->getCode();
         }
 
