@@ -88,6 +88,10 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     {
         $exception = $record['context']['exception'] ?? null;
         
+        if(is_string($exception)) {
+            return $exception;
+        }
+        
         return $exception?->getMessage();
     }
 
