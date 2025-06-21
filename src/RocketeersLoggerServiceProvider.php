@@ -3,15 +3,11 @@
 namespace Rocketeers\Laravel;
 
 use Exception;
-use Illuminate\Container\Container;
-use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Log\LogManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 use Monolog\Logger;
-use Rocketeers\Laravel\RocketeersEventServiceProvider;
 
 class RocketeersLoggerServiceProvider extends ServiceProvider
 {

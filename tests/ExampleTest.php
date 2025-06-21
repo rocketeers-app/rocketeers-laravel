@@ -7,7 +7,6 @@ use Rocketeers\Laravel\RocketeersServiceProvider;
 
 class ExampleTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [RocketeersServiceProvider::class];

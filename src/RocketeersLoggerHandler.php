@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 class RocketeersLoggerHandler extends AbstractProcessingHandler
 {
     protected $client;
+
     protected $request;
 
     public function __construct(Rocketeers $client, $level = Logger::DEBUG, $bubble = true)
@@ -29,7 +30,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             return;
         }
 
-        if (!isset($record['context']['exception'])) {
+        if (! isset($record['context']['exception'])) {
             return;
         }
 
@@ -44,9 +45,9 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             'extra' => $record['extra'] ?: null, // not saved currently
             'level' => $record['level'], // not saved currently
             'level_name' => $record['level_name'], // not saved currently
-            'file' => $record['context']['exception']?->getFile(),
-            'line' => $record['context']['exception']?->getLine(),
-            'trace' => $record['context']['exception']?->getTrace(),
+            'file' => $this->getFile($record),
+            'line' => $this->getLine($record),
+            'trace' => $this->getTrace($record),
             'method' => app()->runningInConsole() ? null : $this->request->getMethod(),
             'url' => app()->runningInConsole() ? config('app.url') : $this->request->getUri(),
             'querystring' => $this->request->query->all() ?: null,
@@ -56,7 +57,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
             'files' => $this->getFiles(),
             'inputs' => $this->request->all() ?: null,
             'sessions' => $this->getSession(),
-            'user_name' => $this->request->user() ? $this->request->user()->name : null,
+            'user_name' => $this->request->user() ? $this->request->user()->getAuthIdentifierName() : null,
             'user_agent' => $this->request->headers->get('User-Agent'),
             'ip_address' => $this->request->getClientIp(),
             'hostname' => $this->getHostname(),
@@ -68,15 +69,14 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     {
         $exception = $record['context']['exception'] ?? null;
 
-        if(is_string($exception)) {
+        if (is_string($exception)) {
             return $exception;
         }
 
-        if(is_object($exception)) {
-            if(method_exists($record['context']['exception'], 'getOriginalClassName')) {
+        if (is_object($exception)) {
+            if (method_exists($record['context']['exception'], 'getOriginalClassName')) {
                 return $record['context']['exception']->getOriginalClassName();
-            }
-            else {
+            } else {
                 return get_class($record['context']['exception']);
             }
         }
@@ -87,22 +87,56 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     public function getMessage(LogRecord $record): ?string
     {
         $exception = $record['context']['exception'] ?? null;
-        
-        if(is_string($exception)) {
+
+        if (is_string($exception)) {
             return $exception;
         }
-        
+
         return $exception?->getMessage();
+    }
+
+    public function getFile(LogRecord $record): ?string
+    {
+        $exception = $record['context']['exception'] ?? null;
+
+        if (is_string($exception)) {
+            return $exception;
+        }
+
+        return $exception?->getFile();
+    }
+
+    public function getLine(LogRecord $record): ?string
+    {
+        $exception = $record['context']['exception'] ?? null;
+
+        if (is_string($exception)) {
+            return $exception;
+        }
+
+        return $exception?->getLine();
+    }
+
+    public function getTrace(LogRecord $record): ?string
+    {
+        $exception = $record['context']['exception'] ?? null;
+
+        if (is_string($exception)) {
+            return $exception;
+        }
+
+        return $exception?->getTrace();
     }
 
     public function getHostname()
     {
-        if(!$this->request->getClientIp() || $this->request->getClientIp() == '127.0.0.1') {
+        if (! $this->request->getClientIp() || $this->request->getClientIp() == '127.0.0.1') {
             return shell_exec('hostname');
         }
 
         return gethostbyaddr($this->request->getClientIp());
     }
+
     public function getSession()
     {
         try {
@@ -117,12 +151,12 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
     protected function getCodeFromException(LogRecord $record): ?int
     {
         $exception = $record['context']['exception'] ?? null;
-        
-        if(is_object($exception) && method_exists($exception, 'getStatusCode')) {
+
+        if (is_object($exception) && method_exists($exception, 'getStatusCode')) {
             return (int) $exception->getStatusCode();
         }
-        
-        if(is_object($exception) && method_exists($exception, 'getCode')) {
+
+        if (is_object($exception) && method_exists($exception, 'getCode')) {
             return (int) $exception->getCode();
         }
 

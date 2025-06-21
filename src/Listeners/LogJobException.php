@@ -2,9 +2,7 @@
 
 namespace Rocketeers\Laravel\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\Events\JobExceptionOccurred;
-use Illuminate\Queue\InteractsWithQueue;
 use Rocketeers\Rocketeers;
 
 class LogJobException
