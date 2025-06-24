@@ -117,7 +117,7 @@ class RocketeersLoggerHandler extends AbstractProcessingHandler
         return $exception?->getLine();
     }
 
-    public function getTrace(LogRecord $record): ?string
+    public function getTrace(LogRecord $record): ?array
     {
         $exception = $record['context']['exception'] ?? null;
 
